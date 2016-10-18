@@ -2,8 +2,10 @@ import urllib2
 import urllib
 from bs4 import BeautifulSoup
 import re
+import os.path
 
 image_folder_path = "../profileimages/"
+twitter_website_folder_path = "../twitterwebsite/"
 
 def CrawlTwitProfileImage(twitter_page_link):
     page = urllib2.urlopen(twitter_page_link)
@@ -14,8 +16,7 @@ def CrawlTwitProfileImage(twitter_page_link):
         for img_tag in id_span.findChildren("img", {"src": True}):
             if 'profile_image' in img_tag['src'] and 'default_' not in img_tag:
                 img_link_str = img_tag['src']
-                img_link_str = re.sub('_bigger', '',
-                                      img_link_str)  # remove the "_bigger" substring, to achieve the bigger image
+                img_link_str = re.sub('_bigger', '', img_link_str)  # remove the "_bigger" substring, to achieve the bigger image
 
                 print "crawling the image " + img_link_str
 
@@ -25,4 +26,10 @@ def CrawlTwitProfileImage(twitter_page_link):
                 f.close()
 
 
-CrawlTwitProfileImage('file:///home/xyh3984/Profile%20image%20project/image%20crawler/twitterwebsite/trump1.html')
+for root, dirs, htmlfiles in os.walk(twitter_website_folder_path):
+    for htmlfile in htmlfiles:
+        abs_path_str = os.path.abspath(htmlfile)
+        abs_path_url_str = "file://" + abs_path_str
+        abs_path_url_str = re.sub(' ', '%20', abs_path_url_str) # replace all the spaces with %20
+        print abs_path_url_str
+        CrawlTwitProfileImage(htmlfile)
