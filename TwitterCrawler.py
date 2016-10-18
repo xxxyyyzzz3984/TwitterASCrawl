@@ -5,7 +5,7 @@ import re
 import os.path
 
 image_folder_path = "../profileimages/"
-twitter_website_folder_path = "../twitterwebsite/"
+twitter_website_folder_path = "../twitterwebsite/todo/"
 
 def CrawlTwitProfileImage(twitter_page_link):
     page = urllib2.urlopen(twitter_page_link)
@@ -28,8 +28,7 @@ def CrawlTwitProfileImage(twitter_page_link):
 
 for root, dirs, htmlfiles in os.walk(twitter_website_folder_path):
     for htmlfile in htmlfiles:
-        abs_path_str = os.path.abspath(htmlfile)
+        abs_path_str = os.path.realpath(os.path.join(root, htmlfile))
         abs_path_url_str = "file://" + abs_path_str
         abs_path_url_str = re.sub(' ', '%20', abs_path_url_str) # replace all the spaces with %20
-        print abs_path_url_str
-        CrawlTwitProfileImage(htmlfile)
+        CrawlTwitProfileImage(abs_path_url_str)
