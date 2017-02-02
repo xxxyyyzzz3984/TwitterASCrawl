@@ -121,8 +121,10 @@ def __parse_search_json(start_date, end_date, keyword, old_tweet_id, new_tweet_i
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36',
         'cookie': 'guest_id=v1%3A147699407786977931; eu_cn=1; moments_profile_moments_nav_tooltip_self=true; co=us; moments_user_moment_profile_create_moment_tooltip=true; moments_moment_guide_create_moment_tooltip=true; external_referer=padhuUp37zjgzgv1mFWxJ12Ozwit7owX|0; geo_webclient=1; __utma=43838368.2131410032.1477169786.1477338634.1480450014.2; __utmz=43838368.1477338634.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); lang=en; _gat=1; kdt=mqUYule2B7ycQiEOx3NPe73nai2kJRWkXugplt8C; remember_checked_on=1; twid="u=98847310"; auth_token=043094244175949b290dc5ea13a242c7765d9f59; pid="v3:1480524214236319347010668"; _ga=GA1.2.2131410032.1477169786; _twitter_sess=BAh7CiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCM6p6LVYAToMY3NyZl9p%250AZCIlMzBlNDI3NDE1NTM3MGRjNWJkODViNGQyMjg5YzU5YTc6B2lkIiVhNjlm%250AMTMwNjhjNGY4MjY5MWRiM2VkOGZmNmMzZTI0YToJdXNlcmkETkrkBQ%253D%253D--a332306192c697e1a211e3a90be0555c724c8fdb'
     }
-    os.system("mkdir " + start_date + "-" + time)
-    resultfile = open(start_date + "-" + time + "/" + searched_results_path + keyword + "_result.js", 'a')
+    os.system("mkdir " + searched_results_path +
+              start_date + "-" + time.replace(' ', ''))
+    resultfile = open(searched_results_path +
+              start_date + "-" + time.replace(' ', '') + "/" + keyword + "_result.js", 'a')
     tweet_info = dict()
     found_time = False
 
@@ -196,14 +198,22 @@ def advanced_search(start_date, end_date, keyword, time, init_old_id=None):
 
 
 if __name__ == '__main__':
-    target_time = '7:31 PM'  ## time in browser + 3 hours
+    target_time = '6:21 AM'  ## time in browser + 3 hours
     start_date = '2017-01-31'
-    end_date = '2017-02-02'
+    end_date = '2017-02-01'
 
-    keywords= ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-               'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    # keywords= ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+    #            'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    #
+    # for i in range(26):
+    #     t = threading.Thread(target=advanced_search, args=(start_date, end_date, keywords[i], target_time, '826391076852359168'))
+    #     t.start()
 
-    for i in range(26):
-        t = threading.Thread(target=advanced_search, args=(start_date, end_date, keywords[i], target_time, '826589886887129088'))
-        t.start()
+    start_date = sys.argv[1]
+    end_date = sys.argv[2]
+    keyword = sys.argv[3]
+    target_time = sys.argv[4]
+    near_tweet_id = sys.argv[5]
+
+    advanced_search(start_date, end_date, keyword, target_time, near_tweet_id)
 
