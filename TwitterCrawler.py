@@ -11,7 +11,7 @@ import os
 username = ''
 password = ''
 searched_website_path = '../searched_websites/'
-searched_results_path = '../search_results/donaldtrump/'
+searched_results_path = '../search_results/billreilly/'
 
 class TwitterCrawl:
     def __init__(self, browser_type):
